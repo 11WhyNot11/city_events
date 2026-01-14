@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page('Головна', ~{::content})}">
+<content>
+    <div class="p-4 p-md-5 mb-4 rounded-3 hero">
+        <div class="container-fluid py-3">
+            <h1 class="display-6 fw-bold">Афіша подій міста</h1>
+            <p class="col-md-8 fs-5">
+                Тут зібрані актуальні події: концерти, лекції, зустрічі та виставки.
+            </p>
+            <a class="btn btn-primary btn-lg" th:href="@{/events}">Переглянути події</a>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h5">Зручна навігація</h3>
+                    <p class="mb-0 text-muted">Список подій, деталі, сторінка про сайт та автор.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h5">Динамічні дані</h3>
+                    <p class="mb-0 text-muted">Події будуть завантажуватися з бази PostgreSQL через Spring Data JPA.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h5">Сучасний дизайн</h3>
+                    <p class="mb-0 text-muted">Bootstrap 5 + власні стилі й скрипти.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</content>
+</html>

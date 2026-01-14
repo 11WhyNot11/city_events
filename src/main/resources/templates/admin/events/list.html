@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page('Адмінка: Події', ~{::content})}">
+<content>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 mb-0">Адмінка: Події</h1>
+        <a class="btn btn-primary" th:href="@{/admin/events/new}">+ Додати подію</a>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped mb-0 align-middle">
+                    <thead>
+                    <tr>
+                        <th style="width: 70px;">ID</th>
+                        <th>Назва</th>
+                        <th>Дата/час</th>
+                        <th>Локація</th>
+                        <th style="width: 220px;" class="text-end">Дії</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${eventsPage.totalElements == 0}">
+                        <td colspan="5" class="text-center text-muted py-4">
+                            Подій ще немає.
+                        </td>
+                    </tr>
+
+                    <tr th:each="e : ${eventsPage.content}">
+                        <td th:text="${e.id}"></td>
+                        <td th:text="${e.title}"></td>
+                        <td th:text="${#temporals.format(e.eventTime, 'dd.MM.yyyy HH:mm')}"></td>
+                        <td th:text="${e.location}"></td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary"
+                               th:href="@{/events/{id}(id=${e.id})}">
+                                Перегляд
+                            </a>
+                            <a class="btn btn-sm btn-outline-primary"
+                               th:href="@{/admin/events/{id}/edit(id=${e.id})}">
+                                Редагувати
+                            </a>
+
+                            <form th:action="@{/admin/events/{id}/delete(id=${e.id})}"
+                                  method="post" class="d-inline"
+                                  onsubmit="return confirm('Видалити подію?');">
+                                <button class="btn btn-sm btn-outline-danger" type="submit">
+                                    Видалити
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пагінація -->
+    <nav class="mt-4" th:if="${eventsPage.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item" th:classappend="${eventsPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/events(page=${eventsPage.number - 1}, size=${size})}">
+                    ←
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="p : ${#numbers.sequence(0, eventsPage.totalPages - 1)}"
+                th:classappend="${p == eventsPage.number} ? 'active'">
+                <a class="page-link"
+                   th:text="${p + 1}"
+                   th:href="@{/admin/events(page=${p}, size=${size})}">
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${eventsPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/events(page=${eventsPage.number + 1}, size=${size})}">
+                    →
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</content>
+</html>

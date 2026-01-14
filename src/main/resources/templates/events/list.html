@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page('Події', ~{::content})}">
+<content>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 mb-0">Події</h1>
+        <span class="text-muted small"
+              th:text="'Знайдено: ' + ${eventsPage.totalElements}"></span>
+    </div>
+
+    <!-- Фільтри / пошук (GET) -->
+    <form class="card mb-3" method="get" th:action="@{/events}">
+        <div class="card-body">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label">Пошук (назва або локація)</label>
+                    <input class="form-control" name="q" placeholder="Напр. концерт, лекція, парк"
+                           th:value="${q}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Від (дата/час)</label>
+                    <input class="form-control" type="datetime-local" name="from"
+                           th:value="${from != null ? #temporals.format(from, 'yyyy-MM-dd''T''HH:mm') : ''}">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">До (дата/час)</label>
+                    <input class="form-control" type="datetime-local" name="to"
+                           th:value="${to != null ? #temporals.format(to, 'yyyy-MM-dd''T''HH:mm') : ''}">
+                </div>
+
+                <div class="col-md-1">
+                    <label class="form-label">На стор.</label>
+                    <select class="form-select" name="size">
+                        <option th:selected="${size == 6}" value="6">6</option>
+                        <option th:selected="${size == 9}" value="9">9</option>
+                        <option th:selected="${size == 12}" value="12">12</option>
+                        <option th:selected="${size == 18}" value="18">18</option>
+                    </select>
+                </div>
+
+                <div class="col-12 d-flex gap-2 mt-2">
+                    <button class="btn btn-primary" type="submit">Застосувати</button>
+                    <a class="btn btn-outline-secondary" th:href="@{/events}">Скинути</a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Порожній результат -->
+    <div th:if="${eventsPage.totalElements == 0}" class="alert alert-info mb-0">
+        Немає актуальних подій за заданими умовами.
+    </div>
+
+    <!-- Список -->
+    <div class="row g-3" th:if="${eventsPage.totalElements > 0}">
+        <div class="col-md-6 col-lg-4" th:each="e : ${eventsPage.content}">
+            <div class="card h-100">
+
+                <div class="event-img-wrap">
+                    <img th:if="${e.imageUrl != null and !#strings.isEmpty(e.imageUrl)}"
+                         th:src="${e.imageUrl}"
+                         class="event-img"
+                         alt="Зображення події">
+
+                    <!-- Плейсхолдер, якщо фото нема -->
+                    <div th:if="${e.imageUrl == null or #strings.isEmpty(e.imageUrl)}"
+                         class="event-img placeholder-img">
+                        Немає фото
+                    </div>
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h2 class="h5" th:text="${e.title}">Назва</h2>
+
+                    <div class="text-muted small mb-2">
+                        <div th:text="${#temporals.format(e.eventTime, 'dd.MM.yyyy HH:mm')}"></div>
+                        <div th:text="${e.location}"></div>
+                    </div>
+
+                    <p class="text-muted" th:text="${e.description}">Опис</p>
+
+                    <a class="btn btn-outline-primary mt-auto"
+                       th:href="@{/events/{id}(id=${e.id})}">
+                        Детальніше
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пагінація -->
+    <nav class="mt-4" th:if="${eventsPage.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item" th:classappend="${eventsPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/events(page=${eventsPage.number - 1}, size=${size}, q=${q}, from=${from}, to=${to})}">
+                    ←
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="p : ${#numbers.sequence(0, eventsPage.totalPages - 1)}"
+                th:classappend="${p == eventsPage.number} ? 'active'">
+                <a class="page-link"
+                   th:text="${p + 1}"
+                   th:href="@{/events(page=${p}, size=${size}, q=${q}, from=${from}, to=${to})}">
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${eventsPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/events(page=${eventsPage.number + 1}, size=${size}, q=${q}, from=${from}, to=${to})}">
+                    →
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <style>
+        .event-img-wrap {
+            height: 220px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .event-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .placeholder-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f2f2f2;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</content>
+</html>

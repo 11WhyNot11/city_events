@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page('Автор', ~{::content})}">
+<content>
+    <h1 class="h3 mb-3">Автор</h1>
+
+    <div class="row g-4 align-items-start">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top author-avatar" th:src="@{/img/myPic.jpg}" alt="Аватар автора">
+                <div class="card-body">
+                    <div class="fw-semibold">Ребар Артур</div>
+                    <div class="text-muted small">Навчальний профіль</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        Я створив навчальний сайт “City Events”
+                        для демонстрації можливостей серверної розробки на Spring Boot.
+                    </p>
+
+                    <p class="mb-0">
+                        У процесі роботи використано: Spring MVC, Spring Boot, Spring Data JPA, Thymeleaf, Bootstrap та PostgreSQL.
+                        Проєкт розміщуватиметься на хостингу для публічного доступу.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</content>
+</html>

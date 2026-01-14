@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page(${event.title}, ~{::content})}">
+<content>
+    <a class="link-secondary text-decoration-none" th:href="@{/events}">← Назад до списку</a>
+
+    <div class="mt-3">
+        <h1 class="h3" th:text="${event.title}">Назва</h1>
+
+        <div class="text-muted mb-3">
+            <span th:text="${#temporals.format(event.eventTime, 'dd.MM.yyyy HH:mm')}"></span>
+            <span class="mx-2">•</span>
+            <span th:text="${event.location}"></span>
+        </div>
+
+        <!-- Однаковий формат фото на деталях -->
+        <div class="event-hero-wrap rounded mb-3"
+             th:if="${event.imageUrl != null and !#strings.isEmpty(event.imageUrl)}">
+            <img th:src="${event.imageUrl}"
+                 class="event-hero-img"
+                 alt="Зображення події">
+        </div>
+
+        <!-- Якщо фото нема -->
+        <div class="event-hero-wrap rounded mb-3 placeholder-hero"
+             th:if="${event.imageUrl == null or #strings.isEmpty(event.imageUrl)}">
+            Немає фото
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-0"
+                   th:text="${event.description != null ? event.description : 'Опис відсутній.'}">
+                    Опис
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .event-hero-wrap {
+            height: 420px;
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+        .event-hero-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .placeholder-hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f2f2f2;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</content>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: page('Про сайт', ~{::content})}">
+<content>
+    <h1 class="h3 mb-3">Про сайт</h1>
+
+    <p class="text-muted">
+        Цей сайт — навчальний проєкт “Афіша подій міста”, реалізований на Spring Boot.
+        Основна мета — продемонструвати роботу серверного фреймворку, шаблонізацію та інтеграцію з базою даних.
+    </p>
+
+    <div class="row g-3 mt-1">
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h5">Функціонал</h2>
+                    <ul class="mb-0">
+                        <li>Перегляд списку подій та детальної інформації</li>
+                        <li>Єдиний стиль сторінок та зручна навігація</li>
+                        <li>Авторська сторінка за посиланням у футері</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="h5">Локація</h2>
+                    <p class="text-muted mb-2">
+                        Всі події на сайті тільки в межах міста Львів
+                    </p>
+
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=24.0140%2C49.8300%2C24.0600%2C49.8600&amp;layer=mapnik"
+                                style="border:0"
+                                loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</content>
+</html>
