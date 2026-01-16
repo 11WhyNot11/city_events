@@ -2,8 +2,12 @@
 FROM gradle:8.10-jdk17 AS build
 WORKDIR /app
 
+COPY gradlew .
+RUN chmod +x gradlew
+
 COPY gradle gradle
-COPY gradlew build.gradle settings.gradle ./
+COPY build.gradle settings.gradle ./
+
 RUN ./gradlew --no-daemon dependencies
 
 COPY . .
